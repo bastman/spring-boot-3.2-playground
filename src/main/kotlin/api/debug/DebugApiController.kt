@@ -35,18 +35,17 @@ class DebugApiController(
     @GetMapping("$API_BASE_URI/me")
     fun me(
         authentication: JwtAuthenticationToken?
-    ): Any? {
+    ): Any {
         if(authentication==null) {
             return mapOf(
+                "msg" to "unauthorized. no jwt.",
                 "apiPrincipal" to null,
                 "_debug" to mapOf(
-                    "message" to "Unauthorized. no jwt provided.",
                     "authenticationName" to null,
                     "jwt" to null,
                 )
             )
         }
-
         val apiPrincipal: ApiPrincipal = apiPrincipalService.apiPrincipalFromAuth(authentication)
         val jwt: Jwt = apiPrincipalService.jwtFromAuth(authentication)
         val outcome: Map<String, Any?> = mapOf(

@@ -13,12 +13,18 @@ class WebSecurityConfig {
 
     private val unprotectedUrls: List<String> = listOf(
         "/health",
+
+        // swagger
         "/swagger-ui.html",
         "/swagger-ui/**",
         "/v3/api-docs/**",
-        "/info",
-        "/create-error",
-        "/version.txt,"
+
+        // custom
+        "/version.txt",
+        "/api/debug/info",
+        "/api/debug/create-error",
+        "/api/debug/me",
+
     )
 
 
@@ -33,9 +39,9 @@ class WebSecurityConfig {
                 it.requestMatchers(*unprotectedUrls.toTypedArray()).permitAll()
             }
             .authorizeHttpRequests {
-                // it.anyRequest().fullyAuthenticated()
+                it.anyRequest().fullyAuthenticated()
                 // allow all for now ...
-                it.anyRequest().permitAll()
+                //it.anyRequest().permitAll()
             }
             .oauth2ResourceServer { oauth2 ->
                 // https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html

@@ -44,9 +44,9 @@ spring:
         jwt:
           issuer-uri: "${JWT_ISSUER_URI}"
           audiences: "${JWT_AUDIENCE}"
-          userClaimsNamespace: "https://example.com/claims"
+          userClaimsNamespace: ${JWT_USER_CLAIMS_NAMESPACE:"https://example.com/claims"}
           userRolesClaim: ${JWT_USER_ROLES_CLAIM:"https://my-app.example/roles"}
-          m2mClientNameClaim: "https://foo.example.com/client_name"
+          m2mClientNameClaim: ${JWT_M2M_CLIENT_NAME_CLAIM:"https://foo.example.com/client_name"}
 
 
 app.serviceName: "example-app"

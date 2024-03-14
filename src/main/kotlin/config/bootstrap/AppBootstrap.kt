@@ -26,12 +26,12 @@ class AppBootstrap(
         logger.info { "===== SPRING BOOT APP: BOOTSTRAP STARTED ====" }
 
         // you may want to do sth here, e.g.: ...
-        val appConf:Any=SpringConfigBinder.getEnvironmentProperties(
-            environment=environment,
+        val appConf: Any = SpringConfigBinder.getEnvironmentProperties(
+            environment = environment,
             configKey = "app",
             jacksonTypeRef<Any>()
         )
-        logger.info{ "onApplicationReadyEvent(): appConf: $appConf"}
+        logger.info { "onApplicationReadyEvent(): appConf: $appConf" }
 
         logger.info { bootLogMessage(headline = "ON SPRING BOOT APP READY ...") }
         logger.info { "===== SPRING BOOT APP: BOOTSTRAP DONE. ====" }

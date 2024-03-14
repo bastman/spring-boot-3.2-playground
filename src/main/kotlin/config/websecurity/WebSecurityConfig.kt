@@ -25,7 +25,7 @@ class WebSecurityConfig {
         "/api/debug/create-error",
         "/api/debug/me",
 
-    )
+        )
 
 
     @Bean

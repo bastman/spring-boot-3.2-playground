@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 class DebugApiController(
-    private val apiPrincipalService:ApiPrincipalService
+    private val apiPrincipalService: ApiPrincipalService
 ) {
 
     companion object {
@@ -36,7 +36,7 @@ class DebugApiController(
     fun me(
         authentication: JwtAuthenticationToken?
     ): Any {
-        if(authentication==null) {
+        if (authentication == null) {
             return mapOf(
                 "msg" to "unauthorized. no jwt.",
                 "apiPrincipal" to null,
@@ -64,7 +64,7 @@ class DebugApiController(
         val apiPrincipal: ApiPrincipal = apiPrincipalService.apiPrincipalFromAuth(authentication)
 
         val rolesRequiredAnyOf: Set<String> = setOf(
-            "role100","role200"
+            "role100", "role200"
         )
         val m2mScopesRequiredAnyOf: Set<String> = setOf("scopeA", "scopeB")
 

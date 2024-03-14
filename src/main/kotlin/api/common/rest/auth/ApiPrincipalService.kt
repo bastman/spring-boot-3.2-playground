@@ -12,8 +12,8 @@ class ApiPrincipalService(
     private val resourceServerConfig: OAuth2ResourceServerConfig
 ) {
 
-    private val userClaimsNamespace:String=resourceServerConfig.userClaimsNamespace
-    private val userRolesClaim:String = resourceServerConfig.userRolesClaim
+    private val userClaimsNamespace: String = resourceServerConfig.userClaimsNamespace
+    private val userRolesClaim: String = resourceServerConfig.userRolesClaim
 
     fun jwtFromAuth(authentication: JwtAuthenticationToken): Jwt {
         val jwt: Jwt = (authentication.credentials as? Jwt)

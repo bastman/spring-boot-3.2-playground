@@ -17,10 +17,11 @@ import java.util.TimeZone
 @OpenAPI31
 class DemoApplication(
     private val appBootstrap: AppBootstrap,
-): ApplicationListener<ApplicationReadyEvent> {
+) : ApplicationListener<ApplicationReadyEvent> {
     companion object {
         private val logger = KotlinLogging.logger {}
     }
+
     @PostConstruct
     fun starting() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"))

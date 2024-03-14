@@ -40,8 +40,6 @@ class WebSecurityConfig {
             }
             .authorizeHttpRequests {
                 it.anyRequest().fullyAuthenticated()
-                // allow all for now ...
-                //it.anyRequest().permitAll()
             }
             .oauth2ResourceServer { oauth2 ->
                 // https://docs.spring.io/spring-security/reference/servlet/oauth2/resource-server/jwt.html

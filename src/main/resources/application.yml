@@ -45,7 +45,7 @@ spring:
           issuer-uri: "${JWT_ISSUER_URI}"
           audiences: "${JWT_AUDIENCE}"
           userClaimsNamespace: "https://example.com/claims"
-          userRolesClaim: "https://my-app.example/roles"
+          userRolesClaim: ${JWT_USER_ROLES_CLAIM:"https://my-app.example/roles"}
           m2mClientNameClaim: "https://foo.example.com/client_name"
 
 

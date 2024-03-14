@@ -1,31 +1,14 @@
 ### osx
 .DS_STORE
 
-### idea, gradle
+### idea
 .idea/
 *.iml
 
+
+# gradle
+.gradle
 .gradle/
 **/build/**
 **/out/**
 
-
-### custom
-**/version.txt
-**/src/main/generated/**
-
-### secrets
-secrets.yaml
-secrets.json
-secrets.sh
-
-
-## Terraform
-.terraform
-
-
-# Ignore Gradle project-specific cache directory
-.gradle
-
-# Ignore Gradle build output directory
-build

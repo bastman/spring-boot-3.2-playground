@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+    <appender name="JSON_CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+            <providers>
+                <mdc/>
+                <timestamp>
+                    <fieldName>application-time</fieldName>
+                    <pattern>yyyy-MM-dd'T'HH:mm:ss.SSSZ</pattern>
+                </timestamp>
+                <logLevel/>
+                <threadName>
+                    <fieldName>thread</fieldName>
+                </threadName>
+                <loggerName>
+                    <fieldName>logger</fieldName>
+                </loggerName>
+                <message/>
+                <stackTrace>
+                    <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                        <maxDepthPerThrowable>32</maxDepthPerThrowable>
+                        <maxLength>2048</maxLength>
+                        <shortenedClassNameLength>32</shortenedClassNameLength>
+                    </throwableConverter>
+                </stackTrace>
+            </providers>
+        </encoder>
+    </appender>
+
+    <appender name="CONSOLE_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd'T'HH:mm:ss.SSSZ} [%thread] %-5level %logger{36} [%X] - %msg%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <!--<springProfile name="local">-->
+        <root level="WARN">
+            <appender-ref ref="CONSOLE_APPENDER"/>
+        </root>
+    <!--</springProfile>-->
+    <springProfile name="local">
+        <root level="INFO">
+            <appender-ref ref="CONSOLE_APPENDER"/>
+        </root>
+    </springProfile>
+    <springProfile name="!local">
+        <root level="INFO">
+            <appender-ref ref="JSON_CONSOLE_APPENDER"/>
+        </root>
+    </springProfile>
+
+    <!--
+    <root level="INFO">
+
+            <appender-ref ref="JSON_CONSOLE_APPENDER"/>
+        <springProfile name="local">
+            <appender-ref ref="CONSOLE_APPENDER"/>
+        </springProfile>
+        -->
+
+<!--
+        <springProfile name="!local &amp; !playground &amp; !test">
+            <appender-ref ref="JSON_CONSOLE_APPENDER"/>
+        </springProfile>
+
+    </root>
+    -->
+
+</configuration>

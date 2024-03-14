@@ -1,0 +1,53 @@
+#spring.config.use-legacy-processing: false
+
+spring.profiles.group.default:
+  - app-common
+
+spring.profiles.group.local:
+  - app-common
+  - env-local
+
+spring.profiles.group.dev:
+  - app-common
+  - env-dev
+
+
+logging.level.ch.qos.logback: ERROR
+logging.level.org.springframework.security: ERROR
+logging.level.org.springframework.boot.autoconfigure.security: ERROR
+
+server:
+  shutdown: graceful
+  error.include-message: always
+
+
+
+# Set Actuator prefix to nothing
+management:
+  endpoints:
+    web.base-path:
+    prometheus.enabled: false
+    enabled-by-default: true
+    web.exposure.include: health
+
+
+spring:
+  mvc:
+    async:
+      request-timeout: 120s
+  main:
+    banner-mode: OFF
+    log-startup-info: false
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ""
+          audiences: ""
+          claimsNamespace: "https://example.com/claims"
+          m2mClientNameClaim: "https://foo.example.com/client_name"
+          rolesClaim: "https://my-app.example/roles"
+
+app.serviceName: "example-app"
+app.envName: undefined
+app.fullName: "${app.serviceName}-${app.envName}"

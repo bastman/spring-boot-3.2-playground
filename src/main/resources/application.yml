@@ -42,8 +42,8 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ""
-          audiences: ""
+          issuer-uri: "${JWT_ISSUER_URI}"
+          audiences: "${JWT_AUDIENCE}"
           claimsNamespace: "https://example.com/claims"
           m2mClientNameClaim: "https://foo.example.com/client_name"
           rolesClaim: "https://my-app.example/roles"

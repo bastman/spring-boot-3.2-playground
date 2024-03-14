@@ -7,6 +7,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.oauth2.jwt.Jwt
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
@@ -16,7 +18,7 @@ class DebugApiController(
 
     companion object {
         private val logger = KotlinLogging.logger {}
-        private const val API_BASE_URI: String = "${ApiConfig.API_BASE_URI}/debug"
+        const val API_BASE_URI: String = "${ApiConfig.API_BASE_URI}/debug"
     }
 
     @GetMapping("$API_BASE_URI/info")
@@ -28,6 +30,23 @@ class DebugApiController(
     fun createError(): Unit {
         throw RuntimeException("Something is weird here. fixe me!")
     }
+
+    @PostMapping("$API_BASE_URI/polymorphic-deserialization-example")
+    fun polymorphicExample(@RequestBody payload: SealedPayloadExample): PolymorphicExampleResponse {
+        val outcome: SealedPayloadExample = when (payload) {
+            is SealedPayloadExample.Auth0 -> payload.copy(auth0Tenant = payload.auth0Tenant.uppercase())
+            is SealedPayloadExample.Entra -> payload.copy(entraTenant = payload.entraTenant.reversed().uppercase())
+        }
+        return PolymorphicExampleResponse(
+            input = payload,
+            output = outcome,
+        )
+    }
+
+    data class PolymorphicExampleResponse(
+        val input: SealedPayloadExample,
+        val output: SealedPayloadExample,
+    )
 
     /**
      * https://www.baeldung.com/get-user-in-spring-security
@@ -82,3 +101,5 @@ class DebugApiController(
     }
 
 }
+
+

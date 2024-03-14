@@ -1,5 +1,6 @@
 package com.example.demo.config.websecurity
 
+import com.example.demo.api.debug.DebugApiController
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -21,11 +22,12 @@ class WebSecurityConfig {
 
         // custom
         "/version.txt",
-        "/api/debug/info",
-        "/api/debug/create-error",
-        "/api/debug/me",
+        "${DebugApiController.API_BASE_URI}/info",
+        "${DebugApiController.API_BASE_URI}/create-error",
+        "${DebugApiController.API_BASE_URI}/debug/me",
+        "${DebugApiController.API_BASE_URI}/polymorphic-deserialization-example"
 
-        )
+    )
 
 
     @Bean

@@ -8,8 +8,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.security.core.Authentication
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
+import org.springframework.web.context.request.ServletWebRequest
 import org.springframework.web.context.request.WebRequest
 import org.springframework.web.server.ResponseStatusException
+import java.time.Instant
 
 @ControllerAdvice
 class ApiExceptionHandler(
@@ -30,12 +32,14 @@ class ApiExceptionHandler(
         val springErrorCtx: Map<String, Any?> = errorAttributes.getErrorAttributes(
             request, defaultErrorAttributeOptions
         )
+        val webReqCtx: WebRequestDetails = WebRequestDetails.of(webRequest = request, timestamp = Instant.now())
 
         val data: Map<String, Any?> = mapOf(
             "error" to mapOf(
                 "message" to ex.message,
             ),
-            "_error" to springErrorCtx,
+            "_reqCtx" to webReqCtx,
+            "_springError" to springErrorCtx,
         )
         logger.error { "catchResponseStatusException(): ${ex.message}" }
 
@@ -49,12 +53,14 @@ class ApiExceptionHandler(
         val springErrorCtx: Map<String, Any?> = errorAttributes.getErrorAttributes(
             request, defaultErrorAttributeOptions
         )
+        val webReqCtx: WebRequestDetails = WebRequestDetails.of(webRequest = request, timestamp = Instant.now())
 
         val data: Map<String, Any?> = mapOf(
             "error" to mapOf(
                 "message" to ex.message,
             ),
-            "_error" to springErrorCtx,
+            "_reqCtx" to webReqCtx,
+            "_springError" to springErrorCtx,
         )
         logger.error { "catchAll(): ${ex.message}" }
         return ResponseEntity(data, HttpStatusCode.valueOf(500))
@@ -62,3 +68,49 @@ class ApiExceptionHandler(
 
 
 }
+
+
+private data class WebRequestDetails(
+    val timestamp: Instant,
+    val httpMethod: String,
+    val httpPath: String,
+    val requestUri: String?,
+) {
+
+    val httpEndpoint: String =
+        listOfNotNull(httpMethod, httpPath)
+            .filter { it.isNotBlank() }
+            .joinToString(separator = " ")
+
+    companion object {
+        fun of(webRequest: WebRequest, timestamp: Instant): WebRequestDetails {
+            val httpMethod: String? = when (webRequest) {
+                is ServletWebRequest -> webRequest.httpMethod.toString()
+                else -> null
+            }
+            val reqURI: String? = when (webRequest) {
+                is ServletWebRequest -> webRequest.request.requestURI
+                else -> null
+            }
+            val httpPath: String = listOfNotNull(
+                webRequest.contextPath,
+                reqURI
+            ).coalesce()
+                ?: ""
+
+            return WebRequestDetails(
+                timestamp = timestamp,
+                httpMethod = httpMethod ?: "",
+                httpPath = httpPath,
+                requestUri = reqURI
+            )
+        }
+
+        private fun List<String?>.coalesce(): String? = this.firstOrNull { !it.isNullOrBlank() }
+    }
+}
+
+
+
+
+
